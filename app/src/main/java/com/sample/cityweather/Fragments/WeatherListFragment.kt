@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -53,8 +52,13 @@ class WeatherListFragment : Fragment() {
 
     private inner class WeatherHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
         override fun onClick(v: View?) {
-            listener?.onFragmentInteraction(weather.city)
+            listener?.onListFragmentInteraction(weather.city)
         }
 
         lateinit var weather: WeatherData
@@ -90,7 +94,7 @@ class WeatherListFragment : Fragment() {
     }
 
     interface OnListFragmentInteractionListener {
-        fun onFragmentInteraction(string: String)
+        fun onListFragmentInteraction(string: String)
     }
 
     companion object {
