@@ -9,10 +9,11 @@ import com.sample.cityweather.R
 class MainActivity : SingleFragmentActivity(),
     WeatherListFragment.OnListFragmentInteractionListener {
 
-    var mMenu: Menu? = null
+    private var mMenu: Menu? = null
 
     override fun onListFragmentInteraction(string: String) {
         //TODO вызвать новое активити
+        //TODO waiting for result
         startActivity(EditActivity.newIntent(this))
     }
 
@@ -27,6 +28,7 @@ class MainActivity : SingleFragmentActivity(),
         return true
     }
 
+    //TODO waiting for result
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.addItem -> {

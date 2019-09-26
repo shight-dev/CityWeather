@@ -1,9 +1,6 @@
 package com.sample.cityweather.DbWork
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.sample.cityweather.DataClasses.WeatherData
 
 @Dao
@@ -14,6 +11,9 @@ interface WeatherDao {
 
     @Delete
     fun removeWeather(weather:WeatherData)
+
+    @Update
+    fun updateWeather(weather:WeatherData)
 
     @Query("select * from WeatherData")
     fun getData(): List<WeatherData>

@@ -9,17 +9,30 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sample.cityweather.DaggerWork.App
 import com.sample.cityweather.DataClasses.WeatherData
+import com.sample.cityweather.DbWork.DataWorker
 
 import com.sample.cityweather.R
 import kotlinx.android.synthetic.main.fragment_list.*
+import javax.inject.Inject
 
 class WeatherListFragment : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
 
+    @Inject
+    lateinit var dataWorker : DataWorker
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        App.component.inject(this)
+    }
+
     fun updateUi() {
+//        val weatherAdapter =
+//            WeatherAdapter(listOf(WeatherData("+20", "Moscow"), WeatherData("+30", "Bangkok")))
         val weatherAdapter =
-            WeatherAdapter(listOf(WeatherData("+20", "Moscow"), WeatherData("+30", "Bangkok")))
+            WeatherAdapter(dataWorker.getAllWeather())
         weatherRecyclerView!!.adapter = weatherAdapter
     }
 
