@@ -42,4 +42,7 @@ class DataWorker(context: Context) {
 
     fun getAllWeather() =
         mWeatherDb.weatherDao().getData()
+
+    fun getWeather(cityName :String) =
+        mWeatherDb.weatherDao().getData(cityName)
 }

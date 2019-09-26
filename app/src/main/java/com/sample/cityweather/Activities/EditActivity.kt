@@ -8,14 +8,25 @@ import com.sample.cityweather.Fragments.EditFragment
 class EditActivity : SingleFragmentActivity(),
     EditFragment.OnEditFragmentInteractionListener {
     override fun onFragmentInteraction(string: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        setResult(0)
+        finish()
     }
 
     override fun createFragment(): Fragment {
-        return EditFragment.newInstance()
+        val cityName = intent.getStringExtra(CITY_NAME)
+        return EditFragment.newInstance(cityName?:null)
     }
 
     companion object {
+
+        const val CITY_NAME = "city"
+
+        fun newIntent(context: Context, cityName : String): Intent {
+            val intent = Intent(context, EditActivity::class.java)
+            intent.putExtra(CITY_NAME, cityName)
+            return intent
+        }
+
         fun newIntent(context: Context): Intent {
             return Intent(context, EditActivity::class.java)
         }

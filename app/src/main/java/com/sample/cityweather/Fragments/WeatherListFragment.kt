@@ -1,14 +1,17 @@
 package com.sample.cityweather.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sample.cityweather.Activities.EditActivity
 import com.sample.cityweather.DaggerWork.App
 import com.sample.cityweather.DataClasses.WeatherData
 import com.sample.cityweather.DbWork.DataWorker
@@ -26,6 +29,7 @@ class WeatherListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.component.inject(this)
+        setHasOptionsMenu(true)
     }
 
     fun updateUi() {
@@ -63,6 +67,23 @@ class WeatherListFragment : Fragment() {
         listener = null
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == 0){
+            weatherRecyclerView.adapter!!.notifyDataSetChanged()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.addItem -> {
+                //TODO rework activity call
+                startActivityForResult(EditActivity.newIntent(activity!!),10)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private inner class WeatherHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
 
@@ -71,7 +92,9 @@ class WeatherListFragment : Fragment() {
         }
 
         override fun onClick(v: View?) {
-            listener?.onListFragmentInteraction(weather.city)
+            //TODO rework
+            startActivityForResult(EditActivity.newIntent(activity!!, weather.city), 10)
+            //listener?.onListFragmentInteraction(weather.city)
         }
 
         lateinit var weather: WeatherData

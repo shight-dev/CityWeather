@@ -17,4 +17,7 @@ interface WeatherDao {
 
     @Query("select * from WeatherData")
     fun getData(): List<WeatherData>
+
+    @Query("select * from WeatherData where city =:cityName")
+    fun getData(cityName : String):WeatherData
 }

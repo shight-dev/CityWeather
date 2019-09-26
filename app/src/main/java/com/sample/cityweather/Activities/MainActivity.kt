@@ -1,5 +1,6 @@
 package com.sample.cityweather.Activities
 
+import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
@@ -14,7 +15,7 @@ class MainActivity : SingleFragmentActivity(),
     override fun onListFragmentInteraction(string: String) {
         //TODO вызвать новое активити
         //TODO waiting for result
-        startActivity(EditActivity.newIntent(this))
+        //startActivityForResult(EditActivity.newIntent(this, string), 10)
     }
 
     override fun createFragment(): Fragment {
@@ -28,13 +29,7 @@ class MainActivity : SingleFragmentActivity(),
         return true
     }
 
-    //TODO waiting for result
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
-            R.id.addItem -> {
-                startActivity(EditActivity.newIntent(this))
-            }
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

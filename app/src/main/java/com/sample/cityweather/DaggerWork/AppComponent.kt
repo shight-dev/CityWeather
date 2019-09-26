@@ -1,6 +1,6 @@
 package com.sample.cityweather.DaggerWork
 
-import com.sample.cityweather.Activities.MainActivity
+import com.sample.cityweather.Fragments.EditFragment
 import com.sample.cityweather.Fragments.WeatherListFragment
 import dagger.Component
 import javax.inject.Singleton
@@ -10,4 +10,5 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(weatherListFragment : WeatherListFragment)
+    fun inject(editFragment : EditFragment)
 }
