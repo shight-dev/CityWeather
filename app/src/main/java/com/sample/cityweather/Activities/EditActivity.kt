@@ -15,17 +15,17 @@ class EditActivity : SingleFragmentActivity(),
     }
 
     override fun createFragment(): Fragment {
-        val cityName = intent.getStringExtra(CITY_NAME)
-        return EditFragment.newInstance(cityName?:null)
+        val id = intent.getStringExtra(ID)
+        return EditFragment.newInstance(id?:null)
     }
 
     companion object {
 
-        const val CITY_NAME = "city"
+        const val ID = "id"
 
-        fun newIntent(context: Context, cityName : String): Intent {
+        fun newIntent(context: Context, id : String): Intent {
             val intent = Intent(context, EditActivity::class.java)
-            intent.putExtra(CITY_NAME, cityName)
+            intent.putExtra(ID, id)
             return intent
         }
 

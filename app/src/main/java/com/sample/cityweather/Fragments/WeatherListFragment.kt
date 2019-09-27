@@ -41,10 +41,14 @@ class WeatherListFragment : Fragment() {
         weatherRecyclerView!!.adapter = weatherAdapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        weatherRecyclerView.adapter!!.notifyDataSetChanged()
+    }
+
     override fun onStart() {
         weatherRecyclerView!!.layoutManager = LinearLayoutManager(activity)
         updateUi()
-
         super.onStart()
     }
 
@@ -97,7 +101,7 @@ class WeatherListFragment : Fragment() {
 
         override fun onClick(v: View?) {
             //TODO rework activity call
-            startActivityForResult(EditActivity.newIntent(activity!!, weather.city), REQUEST_CODE)
+            startActivityForResult(EditActivity.newIntent(activity!!, weather.id.toString()), REQUEST_CODE)
         }
 
         lateinit var weather: WeatherData

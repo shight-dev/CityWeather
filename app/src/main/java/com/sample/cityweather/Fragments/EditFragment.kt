@@ -34,9 +34,9 @@ class EditFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.component.inject(this)
-        val cityName = arguments?.getString(CITY_NAME)
-        cityName?.let {
-            weatherData = dataWorker.getWeather(cityName)
+        val id = arguments?.getString(ID)
+        id?.let {
+            weatherData = dataWorker.getWeather(id)
         }
         weatherData ?: let {
             weatherData = WeatherData()
@@ -51,7 +51,7 @@ class EditFragment : Fragment() {
 
                 weatherData!!.city = cityEdit.text.toString()
 
-                //TODO change primary key
+                //TODO set listeners
                 if(isNew){
                     dataWorker.addWeather(weatherData!!)
                 }
@@ -88,12 +88,12 @@ class EditFragment : Fragment() {
 
     companion object {
 
-        private const val CITY_NAME = "city"
+        private const val ID = "id"
 
         @JvmStatic
-        fun newInstance(city: String?): EditFragment {
+        fun newInstance(id: String?): EditFragment {
             val bundle = Bundle()
-            bundle.putSerializable(CITY_NAME, city)
+            bundle.putSerializable(ID, id)
 
             val editFragment = EditFragment()
             editFragment.arguments = bundle
