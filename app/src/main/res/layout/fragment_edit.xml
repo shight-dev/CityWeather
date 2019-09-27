@@ -9,7 +9,16 @@
     <EditText
         android:id="@+id/cityEdit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/enter_city"/>
+
+    <EditText
+        android:id="@+id/localeEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/enter_locale"/>
 
     <TextView
         android:id="@+id/weatherView"

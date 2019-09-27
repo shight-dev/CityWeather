@@ -50,6 +50,7 @@ class EditFragment : Fragment() {
             weatherData?.let {
 
                 weatherData!!.city = cityEdit.text.toString()
+                weatherData!!.locale = localeEdit.text.toString()
 
                 //TODO set listeners
                 if(isNew){
