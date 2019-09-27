@@ -18,7 +18,9 @@ import com.sample.cityweather.DataClasses.WeatherData
 import com.sample.cityweather.DbWork.DataWorker
 
 import com.sample.cityweather.R
+import com.sample.cityweather.Retrofit.Controller
 import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.list_item_weather.*
 import javax.inject.Inject
 
 class WeatherListFragment : Fragment() {
@@ -33,17 +35,15 @@ class WeatherListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         App.component.inject(this)
         setHasOptionsMenu(true)
+
+        val controller = Controller()
+        controller.start()
     }
 
     private fun updateUi() {
         val weatherAdapter =
             WeatherAdapter(dataWorker.getAllWeather())
         weatherRecyclerView!!.adapter = weatherAdapter
-    }
-
-    override fun onResume() {
-        super.onResume()
-        weatherRecyclerView.adapter!!.notifyDataSetChanged()
     }
 
     override fun onStart() {
@@ -108,10 +108,12 @@ class WeatherListFragment : Fragment() {
 
         var cityTextView: TextView = itemView.findViewById(R.id.cityTextView)
         var weatherTextView: TextView = itemView.findViewById(R.id.weatherTextView)
+        var localeTextView: TextView = itemView.findViewById(R.id.localeTextView)
 
         fun bindWeather(weatherData: WeatherData) {
             cityTextView.text = weatherData.city
             weatherTextView.text = weatherData.weather
+            localeTextView.text = weatherData.locale
             weather = weatherData
         }
     }
