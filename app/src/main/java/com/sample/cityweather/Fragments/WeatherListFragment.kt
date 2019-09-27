@@ -1,5 +1,6 @@
 package com.sample.cityweather.Fragments
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.sample.cityweather.DataClasses.WeatherData
 import com.sample.cityweather.DbWork.DataWorker
 
 import com.sample.cityweather.R
+import com.sample.cityweather.Retrofit.Controller
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
@@ -26,15 +28,15 @@ class WeatherListFragment : Fragment() {
     @Inject
     lateinit var dataWorker : DataWorker
 
+    private val REQUEST_CODE = 10
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.component.inject(this)
         setHasOptionsMenu(true)
     }
 
-    fun updateUi() {
-//        val weatherAdapter =
-//            WeatherAdapter(listOf(WeatherData("+20", "Moscow"), WeatherData("+30", "Bangkok")))
+    private fun updateUi() {
         val weatherAdapter =
             WeatherAdapter(dataWorker.getAllWeather())
         weatherRecyclerView!!.adapter = weatherAdapter
@@ -43,6 +45,9 @@ class WeatherListFragment : Fragment() {
     override fun onStart() {
         weatherRecyclerView!!.layoutManager = LinearLayoutManager(activity)
         updateUi()
+
+        val controller = Controller()
+        controller.start()
         super.onStart()
     }
 
@@ -69,8 +74,10 @@ class WeatherListFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == 0){
-            weatherRecyclerView.adapter!!.notifyDataSetChanged()
+        if(requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                weatherRecyclerView.adapter!!.notifyDataSetChanged()
+            }
         }
     }
 
@@ -78,7 +85,7 @@ class WeatherListFragment : Fragment() {
         when (item.itemId) {
             R.id.addItem -> {
                 //TODO rework activity call
-                startActivityForResult(EditActivity.newIntent(activity!!),10)
+                startActivityForResult(EditActivity.newIntent(activity!!),REQUEST_CODE)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -92,9 +99,8 @@ class WeatherListFragment : Fragment() {
         }
 
         override fun onClick(v: View?) {
-            //TODO rework
-            startActivityForResult(EditActivity.newIntent(activity!!, weather.city), 10)
-            //listener?.onListFragmentInteraction(weather.city)
+            //TODO rework activity call
+            startActivityForResult(EditActivity.newIntent(activity!!, weather.city), REQUEST_CODE)
         }
 
         lateinit var weather: WeatherData
@@ -134,7 +140,6 @@ class WeatherListFragment : Fragment() {
     }
 
     companion object {
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() =
             WeatherListFragment()

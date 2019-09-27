@@ -1,5 +1,6 @@
 package com.sample.cityweather.Activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
@@ -7,8 +8,9 @@ import com.sample.cityweather.Fragments.EditFragment
 
 class EditActivity : SingleFragmentActivity(),
     EditFragment.OnEditFragmentInteractionListener {
+
     override fun onFragmentInteraction(string: String) {
-        setResult(0)
+        setResult(Activity.RESULT_OK)
         finish()
     }
 
