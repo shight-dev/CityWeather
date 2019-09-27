@@ -18,7 +18,6 @@ import com.sample.cityweather.DataClasses.WeatherData
 import com.sample.cityweather.DbWork.DataWorker
 
 import com.sample.cityweather.R
-import com.sample.cityweather.Retrofit.Controller
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
@@ -46,8 +45,6 @@ class WeatherListFragment : Fragment() {
         weatherRecyclerView!!.layoutManager = LinearLayoutManager(activity)
         updateUi()
 
-        val controller = Controller()
-        controller.start()
         super.onStart()
     }
 
