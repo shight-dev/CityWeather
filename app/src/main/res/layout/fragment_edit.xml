@@ -38,7 +38,7 @@
         android:id="@+id/findWeatherBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/find_weather" />
+        android:text="@string/refresh_data" />
 
     <Button
         android:id="@+id/saveBtn"

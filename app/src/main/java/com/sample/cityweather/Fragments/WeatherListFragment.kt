@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -13,58 +12,53 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.arellomobile.mvp.MvpAppCompatFragment
+import com.arellomobile.mvp.presenter.InjectPresenter
 import com.sample.cityweather.Activities.EditActivity
-import com.sample.cityweather.DaggerWork.App
 import com.sample.cityweather.DataClasses.WeatherData
-import com.sample.cityweather.DataWorkers.WeatherConverter
-import com.sample.cityweather.DbWork.DataWorker
+import com.sample.cityweather.mvpViews.WeatherListView
+import com.sample.cityweather.Presenters.WeatherListPresenter
 
 import com.sample.cityweather.R
-import com.sample.cityweather.Retrofit.WeatherController.WeatherController
-import com.sample.cityweather.Retrofit.DataCallback
-import com.sample.cityweather.Retrofit.PictureController.PictureController
 import kotlinx.android.synthetic.main.fragment_list.*
-import javax.inject.Inject
 
-class WeatherListFragment : Fragment() {
+class WeatherListFragment : MvpAppCompatFragment(),
+    WeatherListView {
+
     private var listener: OnListFragmentInteractionListener? = null
 
-    @Inject
-    lateinit var dataWorker : DataWorker
-
-    @Inject
-    lateinit var weatherController : WeatherController
+    @InjectPresenter
+    lateinit var weatherListPresenter : WeatherListPresenter
 
     private val REQUEST_CODE = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.component.inject(this)
         setHasOptionsMenu(true)
     }
 
-    private fun updateUi() {
+    override fun updateWeather(position: Int) {
+        weatherRecyclerView.adapter?.notifyItemChanged(position)
+    }
+
+    override fun updateUi(weatherList : List<WeatherData>) {
         val weatherAdapter =
-            WeatherAdapter(dataWorker.getAllWeather())
+            WeatherAdapter(weatherList)
         weatherRecyclerView!!.adapter = weatherAdapter
         weatherAdapter.notifyDataSetChanged()
     }
 
     override fun onStart() {
         weatherRecyclerView!!.layoutManager = LinearLayoutManager(activity)
-        updateUi()
         updateBtn.setOnClickListener{
-            updateUi()
+            weatherListPresenter.onUpdateBtnClick()
         }
         super.onStart()
-        val pictureController =
-            PictureController()
-        pictureController.start(object :DataCallback{
-            override fun setData(data: String?) {
-                val a =1
-            }
+    }
 
-        }, "Moscow")
+    override fun onResume() {
+        super.onResume()
+        weatherListPresenter.onResume()
     }
 
     override fun onCreateView(
@@ -126,23 +120,14 @@ class WeatherListFragment : Fragment() {
         var weatherTextView: TextView = itemView.findViewById(R.id.weatherTextView)
         var deleteBtn: Button = itemView.findViewById(R.id.deleteBtn)
 
-        fun bindWeather(weatherData: WeatherData) {
+        fun bindWeather(weatherData: WeatherData, position: Int) {
             cityTextView.text = weatherData.city
             weatherTextView.text = weatherData.weather
             weather = weatherData
             deleteBtn.setOnClickListener {
-                dataWorker.removeWeather(weather)
-                updateUi()
+                weatherListPresenter.onDeleteBtnClick(weather)
             }
-            weatherController.start(object : DataCallback{
-                override fun setData(data: String?) {
-                    val weatherString =  WeatherConverter.convertKelvin(data)
-                    weatherTextView.text = weatherString
-                    weather.weather = weatherString
-                    dataWorker.updateWeather(weather)
-                }
-
-            },weather)
+            weatherListPresenter.onItemUpdate(weather, position)
         }
     }
 
@@ -162,7 +147,7 @@ class WeatherListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: WeatherHolder, position: Int) {
-            holder.bindWeather(weatherList[position])
+            holder.bindWeather(weatherList[position], position)
         }
     }
 

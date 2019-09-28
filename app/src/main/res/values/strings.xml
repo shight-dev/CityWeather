@@ -7,4 +7,5 @@
     <string name="find_weather">Find weather</string>
     <string name="update">Update</string>
     <string name="del">Del</string>
+    <string name="refresh_data">Refresh data</string>
 </resources>
