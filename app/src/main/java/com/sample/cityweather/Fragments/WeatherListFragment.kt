@@ -20,9 +20,9 @@ import com.sample.cityweather.DataWorkers.WeatherConverter
 import com.sample.cityweather.DbWork.DataWorker
 
 import com.sample.cityweather.R
-import com.sample.cityweather.Retrofit.WeatherController
+import com.sample.cityweather.Retrofit.WeatherController.WeatherController
 import com.sample.cityweather.Retrofit.DataCallback
-import com.sample.cityweather.Retrofit.PictureController
+import com.sample.cityweather.Retrofit.PictureController.PictureController
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
@@ -57,7 +57,8 @@ class WeatherListFragment : Fragment() {
             updateUi()
         }
         super.onStart()
-        val pictureController = PictureController()
+        val pictureController =
+            PictureController()
         pictureController.start(object :DataCallback{
             override fun setData(data: String?) {
                 val a =1
@@ -123,13 +124,11 @@ class WeatherListFragment : Fragment() {
         //TODO is nessasary?
         var cityTextView: TextView = itemView.findViewById(R.id.cityTextView)
         var weatherTextView: TextView = itemView.findViewById(R.id.weatherTextView)
-        var localeTextView: TextView = itemView.findViewById(R.id.localeTextView)
         var deleteBtn: Button = itemView.findViewById(R.id.deleteBtn)
 
         fun bindWeather(weatherData: WeatherData) {
             cityTextView.text = weatherData.city
             weatherTextView.text = weatherData.weather
-            localeTextView.text = weatherData.locale
             weather = weatherData
             deleteBtn.setOnClickListener {
                 dataWorker.removeWeather(weather)

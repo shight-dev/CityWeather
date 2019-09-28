@@ -14,9 +14,9 @@ import com.sample.cityweather.DataWorkers.WeatherConverter
 import com.sample.cityweather.DbWork.DataWorker
 
 import com.sample.cityweather.R
-import com.sample.cityweather.Retrofit.WeatherController
+import com.sample.cityweather.Retrofit.WeatherController.WeatherController
 import com.sample.cityweather.Retrofit.DataCallback
-import com.sample.cityweather.Retrofit.PictureController
+import com.sample.cityweather.Retrofit.PictureController.PictureController
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
@@ -28,11 +28,14 @@ class EditFragment : Fragment() {
     lateinit var dataWorker: DataWorker
 
     @Inject
-    lateinit var weatherController:WeatherController
+    lateinit var weatherController: WeatherController
+
+    @Inject
+    lateinit var pictureController: PictureController
 
     private var weatherData: WeatherData? = null
 
-    private var isNew : Boolean = false
+    private var isNew: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,52 +55,46 @@ class EditFragment : Fragment() {
             weatherData = WeatherData()
             isNew = true
         }
-        weatherData?.let {
-            val cityName = weatherData?.city?:""
-            if(!cityName.contentEquals("")) {
-                val pictureController = PictureController()
-                pictureController.start(object : DataCallback {
-                    override fun setData(data: String?) {
-                        Picasso.get().load(data).into(imageView)
-                    }
-
-                }, cityName)
-            }
-        }
     }
 
     override fun onStart() {
         super.onStart()
         saveBtn.setOnClickListener {
             weatherData?.let {
-
-                weatherData!!.city = cityEdit.text.toString()
-                weatherData!!.locale = localeEdit.text.toString()
-
-                //TODO set listeners
-                if(isNew){
+                if (isNew) {
                     dataWorker.addWeather(weatherData!!)
-                }
-                else {
+                } else {
                     dataWorker.updateWeather(weatherData!!)
                 }
             }
             listener?.onFragmentInteraction("close")
         }
 
-        findWeatherBtn.setOnClickListener{
+        findWeatherBtn.setOnClickListener {
             weatherData?.let {
-                weatherController.start(object : DataCallback{
+                weatherController.start(object : DataCallback {
                     override fun setData(data: String?) {
                         val res = WeatherConverter.convertKelvin(data)
                         weatherView.text = res
                         weatherData!!.weather = res
                     }
                 }, weatherData!!)
+                val cityName = weatherData?.city ?: ""
+                if (!cityName.contentEquals("")) {
+                    pictureController.start(object : DataCallback {
+                        override fun setData(data: String?) {
+                            data?.let {
+                                weatherData?.photoId = data
+                                Picasso.get().load(data).into(imageView)
+                            }
+                        }
+
+                    }, cityName)
+                }
             }
         }
 
-        cityEdit.addTextChangedListener(object : TextWatcher{
+        cityEdit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 //do nothing
             }
@@ -112,7 +109,7 @@ class EditFragment : Fragment() {
 
         })
 
-        localeEdit.addTextChangedListener(object : TextWatcher{
+        localeEdit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 //do nothing
             }
@@ -126,10 +123,17 @@ class EditFragment : Fragment() {
             }
 
         })
+        if (!isNew) {
+            weatherData?.let {
+                if(weatherData?.photoId?.contentEquals("") != true) {
+                    Picasso.get().load(weatherData?.photoId).into(imageView)
+                }
+            }
+        }
         updateUi()
     }
 
-    fun updateUi() {
+    private fun updateUi() {
         cityEdit.setText(weatherData?.city)
         localeEdit.setText(weatherData?.locale)
         weatherView.text = weatherData?.weather

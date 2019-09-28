@@ -1,4 +1,4 @@
-package com.sample.cityweather.Retrofit
+package com.sample.cityweather.Retrofit.PictureController
 
 import retrofit2.Call
 import retrofit2.http.GET

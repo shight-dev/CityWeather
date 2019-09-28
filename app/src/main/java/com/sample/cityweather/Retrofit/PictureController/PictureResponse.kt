@@ -1,4 +1,6 @@
-package com.sample.cityweather.Retrofit
+package com.sample.cityweather.Retrofit.PictureController
+
+import com.sample.cityweather.Retrofit.PictureController.PictureData
 
 class PictureResponse {
     val total :String? = null

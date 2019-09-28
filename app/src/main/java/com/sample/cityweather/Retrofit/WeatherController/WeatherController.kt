@@ -1,7 +1,8 @@
-package com.sample.cityweather.Retrofit
+package com.sample.cityweather.Retrofit.WeatherController
 
 import com.google.gson.GsonBuilder
 import com.sample.cityweather.DataClasses.WeatherData
+import com.sample.cityweather.Retrofit.DataCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

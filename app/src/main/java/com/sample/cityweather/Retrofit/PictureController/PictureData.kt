@@ -1,4 +1,4 @@
-package com.sample.cityweather.Retrofit
+package com.sample.cityweather.Retrofit.PictureController
 
 class PictureData {
     val type:String? = null
