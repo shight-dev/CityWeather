@@ -15,12 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sample.cityweather.Activities.EditActivity
 import com.sample.cityweather.DaggerWork.App
 import com.sample.cityweather.DataClasses.WeatherData
+import com.sample.cityweather.DataWorkers.WeatherConverter
 import com.sample.cityweather.DbWork.DataWorker
 
 import com.sample.cityweather.R
-import com.sample.cityweather.Retrofit.Controller
+import com.sample.cityweather.Retrofit.WeatherController
+import com.sample.cityweather.Retrofit.DataCallback
+import com.sample.cityweather.Retrofit.PictureController
 import kotlinx.android.synthetic.main.fragment_list.*
-import kotlinx.android.synthetic.main.list_item_weather.*
 import javax.inject.Inject
 
 class WeatherListFragment : Fragment() {
@@ -29,27 +31,38 @@ class WeatherListFragment : Fragment() {
     @Inject
     lateinit var dataWorker : DataWorker
 
+    @Inject
+    lateinit var weatherController : WeatherController
+
     private val REQUEST_CODE = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.component.inject(this)
         setHasOptionsMenu(true)
-
-        val controller = Controller()
-        controller.start()
     }
 
     private fun updateUi() {
         val weatherAdapter =
             WeatherAdapter(dataWorker.getAllWeather())
         weatherRecyclerView!!.adapter = weatherAdapter
+        weatherAdapter.notifyDataSetChanged()
     }
 
     override fun onStart() {
         weatherRecyclerView!!.layoutManager = LinearLayoutManager(activity)
         updateUi()
+        updateBtn.setOnClickListener{
+            updateUi()
+        }
         super.onStart()
+        val pictureController = PictureController()
+        pictureController.start(object :DataCallback{
+            override fun setData(data: String?) {
+                val a =1
+            }
+
+        }, "Moscow")
     }
 
     override fun onCreateView(
@@ -115,6 +128,15 @@ class WeatherListFragment : Fragment() {
             weatherTextView.text = weatherData.weather
             localeTextView.text = weatherData.locale
             weather = weatherData
+            weatherController.start(object : DataCallback{
+                override fun setData(data: String?) {
+                    val weatherString =  WeatherConverter.convertKelvin(data)
+                    weatherTextView.text = weatherString
+                    weather.weather = weatherString
+                    dataWorker.updateWeather(weather)
+                }
+
+            },weather)
         }
     }
 

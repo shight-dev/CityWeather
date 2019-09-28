@@ -2,15 +2,20 @@ package com.sample.cityweather.Fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sample.cityweather.DaggerWork.App
 import com.sample.cityweather.DataClasses.WeatherData
+import com.sample.cityweather.DataWorkers.WeatherConverter
 import com.sample.cityweather.DbWork.DataWorker
 
 import com.sample.cityweather.R
+import com.sample.cityweather.Retrofit.WeatherController
+import com.sample.cityweather.Retrofit.DataCallback
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
 
@@ -19,6 +24,9 @@ class EditFragment : Fragment() {
 
     @Inject
     lateinit var dataWorker: DataWorker
+
+    @Inject
+    lateinit var weatherController:WeatherController
 
     private var weatherData: WeatherData? = null
 
@@ -62,11 +70,55 @@ class EditFragment : Fragment() {
             }
             listener?.onFragmentInteraction("close")
         }
+
+        findWeatherBtn.setOnClickListener{
+            weatherData?.let {
+                weatherController.start(object : DataCallback{
+                    override fun setData(data: String?) {
+                        val res = WeatherConverter.convertKelvin(data)
+                        weatherView.text = res
+                        weatherData!!.weather = res
+                    }
+                }, weatherData!!)
+            }
+        }
+
+        cityEdit.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //do nothing
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                weatherData?.city = s.toString()
+            }
+
+        })
+
+        localeEdit.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //do nothing
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                weatherData?.locale = s.toString()
+            }
+
+        })
         updateUi()
     }
 
     fun updateUi() {
         cityEdit.setText(weatherData?.city)
+        localeEdit.setText(weatherData?.locale)
+        weatherView.text = weatherData?.weather
     }
 
     override fun onAttach(context: Context) {

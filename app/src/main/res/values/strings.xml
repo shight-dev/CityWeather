@@ -4,4 +4,6 @@
     <string name="save">Save</string>
     <string name="enter_locale">Enter locale</string>
     <string name="enter_city">Enter city</string>
+    <string name="find_weather">Find weather</string>
+    <string name="update">Update</string>
 </resources>

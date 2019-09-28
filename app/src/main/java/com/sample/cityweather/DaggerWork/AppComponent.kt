@@ -5,7 +5,7 @@ import com.sample.cityweather.Fragments.WeatherListFragment
 import dagger.Component
 import javax.inject.Singleton
 
-@Component(modules = [DataWorkerModule::class, ContextModule::class])
+@Component(modules = [DataWorkerModule::class, ContextModule::class, RetrofitControllerModule::class])
 @Singleton
 interface AppComponent {
 

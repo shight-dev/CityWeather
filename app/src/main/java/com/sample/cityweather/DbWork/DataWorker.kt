@@ -15,8 +15,8 @@ class DataWorker(context: Context) {
             super.onCreate(db)
             Executors.newSingleThreadScheduledExecutor()
                 .execute {
-                    mWeatherDb.weatherDao().addWeather(WeatherData("+15", "Moscow"))
-                    mWeatherDb.weatherDao().addWeather(WeatherData("+35", "Bangkok"))
+                    mWeatherDb.weatherDao().addWeather(WeatherData("+15", "Moscow","ru"))
+                    mWeatherDb.weatherDao().addWeather(WeatherData("+35", "Bangkok", "th"))
                 }
         }
 

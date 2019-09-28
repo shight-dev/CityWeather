@@ -8,6 +8,7 @@ class App : Application(){
         return DaggerAppComponent.builder()
             .contextModule(ContextModule(applicationContext))
             .dataWorkerModule(DataWorkerModule())
+            .retrofitControllerModule(RetrofitControllerModule())
             .build()
     }
 
