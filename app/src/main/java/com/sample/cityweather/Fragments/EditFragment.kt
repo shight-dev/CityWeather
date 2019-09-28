@@ -16,6 +16,8 @@ import com.sample.cityweather.DbWork.DataWorker
 import com.sample.cityweather.R
 import com.sample.cityweather.Retrofit.WeatherController
 import com.sample.cityweather.Retrofit.DataCallback
+import com.sample.cityweather.Retrofit.PictureController
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
 
@@ -49,6 +51,18 @@ class EditFragment : Fragment() {
         weatherData ?: let {
             weatherData = WeatherData()
             isNew = true
+        }
+        weatherData?.let {
+            val cityName = weatherData?.city?:""
+            if(!cityName.contentEquals("")) {
+                val pictureController = PictureController()
+                pictureController.start(object : DataCallback {
+                    override fun setData(data: String?) {
+                        Picasso.get().load(data).into(imageView)
+                    }
+
+                }, cityName)
+            }
         }
     }
 

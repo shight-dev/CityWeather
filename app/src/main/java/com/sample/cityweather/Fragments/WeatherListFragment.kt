@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -119,15 +120,21 @@ class WeatherListFragment : Fragment() {
 
         lateinit var weather: WeatherData
 
+        //TODO is nessasary?
         var cityTextView: TextView = itemView.findViewById(R.id.cityTextView)
         var weatherTextView: TextView = itemView.findViewById(R.id.weatherTextView)
         var localeTextView: TextView = itemView.findViewById(R.id.localeTextView)
+        var deleteBtn: Button = itemView.findViewById(R.id.deleteBtn)
 
         fun bindWeather(weatherData: WeatherData) {
             cityTextView.text = weatherData.city
             weatherTextView.text = weatherData.weather
             localeTextView.text = weatherData.locale
             weather = weatherData
+            deleteBtn.setOnClickListener {
+                dataWorker.removeWeather(weather)
+                updateUi()
+            }
             weatherController.start(object : DataCallback{
                 override fun setData(data: String?) {
                     val weatherString =  WeatherConverter.convertKelvin(data)

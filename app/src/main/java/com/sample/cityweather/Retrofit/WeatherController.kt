@@ -27,7 +27,6 @@ class WeatherController {
 
         call.enqueue(object : Callback<WeatherResponse>{
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                val a =1
             }
 
             override fun onResponse(
