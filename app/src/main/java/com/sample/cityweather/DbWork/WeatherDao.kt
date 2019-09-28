@@ -7,17 +7,17 @@ import com.sample.cityweather.DataClasses.WeatherData
 interface WeatherDao {
 
     @Insert
-    fun addWeather(weather:WeatherData)
+    fun addWeather(weather: WeatherData)
 
     @Delete
-    fun removeWeather(weather:WeatherData)
+    fun removeWeather(weather: WeatherData)
 
     @Update
-    fun updateWeather(weather:WeatherData)
+    fun updateWeather(weather: WeatherData)
 
     @Query("select * from WeatherData")
     fun getData(): List<WeatherData>
 
     @Query("select * from WeatherData where id =:id")
-    fun getData(id : String):WeatherData
+    fun getData(id: String): WeatherData
 }

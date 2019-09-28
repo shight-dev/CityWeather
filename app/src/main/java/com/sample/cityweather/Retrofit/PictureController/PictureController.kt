@@ -13,7 +13,7 @@ import kotlin.random.Random
 class PictureController {
     private val BASE_URL = "https://pixabay.com/"
 
-    fun start(dataCallback: DataCallback, cityName:String) {
+    fun start(dataCallback: DataCallback, cityName: String) {
         val gson = GsonBuilder().setLenient().create()
 
         val retrofit = Retrofit.Builder()
@@ -36,7 +36,7 @@ class PictureController {
                 val pictureDataList = response.body()?.hits
                 pictureDataList?.let {
                     val size = pictureDataList.size
-                    if(size > 0){
+                    if (size > 0) {
                         dataCallback.setData(pictureDataList[Random(Date().time).nextInt(size)].largeImageURL)
                     }
                 }

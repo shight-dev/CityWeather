@@ -16,14 +16,14 @@ class EditActivity : SingleFragmentActivity(),
 
     override fun createFragment(): Fragment {
         val id = intent.getStringExtra(ID)
-        return EditFragment.newInstance(id?:null)
+        return EditFragment.newInstance(id ?: null)
     }
 
     companion object {
 
         const val ID = "id"
 
-        fun newIntent(context: Context, id : String): Intent {
+        fun newIntent(context: Context, id: String): Intent {
             val intent = Intent(context, EditActivity::class.java)
             intent.putExtra(ID, id)
             return intent

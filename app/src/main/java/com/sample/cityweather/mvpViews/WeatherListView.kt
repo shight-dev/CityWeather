@@ -7,8 +7,8 @@ import com.sample.cityweather.DataClasses.WeatherData
 
 interface WeatherListView : MvpView {
     @StateStrategyType(SkipStrategy::class)
-    fun updateUi(weatherList :List<WeatherData>)
+    fun updateUi(weatherList: List<WeatherData>)
 
     @StateStrategyType(SkipStrategy::class)
-    fun updateWeather(position:Int)
+    fun updateWeather(position: Int)
 }

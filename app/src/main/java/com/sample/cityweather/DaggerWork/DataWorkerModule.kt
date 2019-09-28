@@ -11,7 +11,7 @@ class DataWorkerModule {
 
     @Provides
     @Singleton
-    fun provideDataWorker(context: Context):DataWorker{
+    fun provideDataWorker(context: Context): DataWorker {
         return DataWorker(context)
     }
 }

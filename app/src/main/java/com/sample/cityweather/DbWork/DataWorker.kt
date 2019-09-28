@@ -15,7 +15,7 @@ class DataWorker(context: Context) {
             super.onCreate(db)
             Executors.newSingleThreadScheduledExecutor()
                 .execute {
-                    mWeatherDb.weatherDao().addWeather(WeatherData("+15", "Moscow","ru"))
+                    mWeatherDb.weatherDao().addWeather(WeatherData("+15", "Moscow", "ru"))
                     mWeatherDb.weatherDao().addWeather(WeatherData("+35", "Bangkok", "th"))
                 }
         }
@@ -43,6 +43,6 @@ class DataWorker(context: Context) {
     fun getAllWeather() =
         mWeatherDb.weatherDao().getData()
 
-    fun getWeather(cityName :String) =
+    fun getWeather(cityName: String) =
         mWeatherDb.weatherDao().getData(cityName)
 }

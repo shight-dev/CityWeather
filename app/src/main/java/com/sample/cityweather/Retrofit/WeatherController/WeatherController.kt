@@ -14,7 +14,7 @@ class WeatherController {
 
     private val BASE_URL = "http://api.openweathermap.org/"
 
-    fun start(dataCallback: DataCallback, weatherData:WeatherData) {
+    fun start(dataCallback: DataCallback, weatherData: WeatherData) {
         val gson = GsonBuilder().setLenient().create()
 
         val retrofit = Retrofit.Builder()
@@ -24,9 +24,10 @@ class WeatherController {
 
         val weatherApi = retrofit.create(WeatherApi::class.java)
 
-        val call: Call<WeatherResponse> = weatherApi.loadWeather("${weatherData.city},${weatherData.locale}")
+        val call: Call<WeatherResponse> =
+            weatherApi.loadWeather("${weatherData.city},${weatherData.locale}")
 
-        call.enqueue(object : Callback<WeatherResponse>{
+        call.enqueue(object : Callback<WeatherResponse> {
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
             }
 

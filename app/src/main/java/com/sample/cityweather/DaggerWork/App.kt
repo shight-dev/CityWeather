@@ -2,7 +2,7 @@ package com.sample.cityweather.DaggerWork
 
 import android.app.Application
 
-class App : Application(){
+class App : Application() {
 
     protected fun buildComponent(): AppComponent {
         return DaggerAppComponent.builder()
@@ -18,7 +18,7 @@ class App : Application(){
         component = buildComponent()
     }
 
-    companion object{
+    companion object {
         lateinit var component: AppComponent
     }
 }

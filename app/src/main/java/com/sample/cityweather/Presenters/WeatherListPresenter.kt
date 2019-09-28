@@ -18,36 +18,36 @@ class WeatherListPresenter : MvpPresenter<WeatherListView>() {
     lateinit var dataWorker: DataWorker
 
     @Inject
-    lateinit var weatherController : WeatherController
+    lateinit var weatherController: WeatherController
 
     init {
         App.component.inject(this)
     }
 
-    fun onUpdateBtnClick(){
+    fun onUpdateBtnClick() {
         viewState.updateUi(dataWorker.getAllWeather())
     }
 
-    fun onResume(){
+    fun onResume() {
         viewState.updateUi(dataWorker.getAllWeather())
     }
 
-    fun onDeleteBtnClick(weatherData: WeatherData){
+    fun onDeleteBtnClick(weatherData: WeatherData) {
         dataWorker.removeWeather(weatherData)
         viewState.updateUi(dataWorker.getAllWeather())
     }
 
-    fun onItemUpdate(weatherData : WeatherData, position:Int){
+    fun onItemUpdate(weatherData: WeatherData, position: Int) {
         weatherController.start(object : DataCallback {
             override fun setData(data: String?) {
-                val weatherString =  WeatherConverter.convertKelvin(data)
-                if(!weatherString.contentEquals(weatherData.weather)) {
+                val weatherString = WeatherConverter.convertKelvin(data)
+                if (!weatherString.contentEquals(weatherData.weather)) {
                     weatherData.weather = weatherString
                     dataWorker.updateWeather(weatherData)
                     viewState.updateWeather(position)
                 }
             }
 
-        },weatherData)
+        }, weatherData)
     }
 }

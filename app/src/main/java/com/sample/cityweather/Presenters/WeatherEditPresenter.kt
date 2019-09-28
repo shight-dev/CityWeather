@@ -2,11 +2,9 @@ package com.sample.cityweather.Presenters
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.AsyncTask
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.sample.cityweather.DaggerWork.App
-import com.sample.cityweather.DaggerWork.AppComponent
 import com.sample.cityweather.DataClasses.WeatherData
 import com.sample.cityweather.DataWorkers.WeatherConverter
 import com.sample.cityweather.DbWork.DataWorker
@@ -20,7 +18,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @InjectViewState
-class WeatherEditPresenter:MvpPresenter<WeatherEditView>() {
+class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
     @Inject
     lateinit var dataWorker: DataWorker
 
@@ -38,7 +36,7 @@ class WeatherEditPresenter:MvpPresenter<WeatherEditView>() {
         App.component.inject(this)
     }
 
-    fun onCreate(id:String?){
+    fun onCreate(id: String?) {
         id?.let {
             weatherData = dataWorker.getWeather(id)
         }
@@ -48,7 +46,7 @@ class WeatherEditPresenter:MvpPresenter<WeatherEditView>() {
         }
     }
 
-    fun onSaveBtnClick(){
+    fun onSaveBtnClick() {
         weatherData?.let {
             if (isNew) {
                 dataWorker.addWeather(weatherData!!)
@@ -58,7 +56,7 @@ class WeatherEditPresenter:MvpPresenter<WeatherEditView>() {
         }
     }
 
-    fun onRefreshDataBtnClick(){
+    fun onRefreshDataBtnClick() {
         weatherData?.let {
             weatherController.start(object : DataCallback {
                 override fun setData(data: String?) {
@@ -73,18 +71,24 @@ class WeatherEditPresenter:MvpPresenter<WeatherEditView>() {
                     override fun setData(data: String?) {
                         data?.let {
                             weatherData?.photoId = data
-                            Picasso.get().load(weatherData?.photoId).into(object :Target{
+                            Picasso.get().load(weatherData?.photoId).into(object : Target {
                                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
                                     //do nothing
                                     //TODO show something
                                 }
 
-                                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                                override fun onBitmapFailed(
+                                    e: Exception?,
+                                    errorDrawable: Drawable?
+                                ) {
                                     //do nothing
                                     //TODO show something
                                 }
 
-                                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                                override fun onBitmapLoaded(
+                                    bitmap: Bitmap?,
+                                    from: Picasso.LoadedFrom?
+                                ) {
                                     bitmap?.let {
                                         viewState.updateImage(bitmap)
                                     }
@@ -99,11 +103,11 @@ class WeatherEditPresenter:MvpPresenter<WeatherEditView>() {
         }
     }
 
-    fun onStart(){
+    fun onStart() {
         if (!isNew) {
             weatherData?.let {
-                if(weatherData?.photoId?.contentEquals("") != true) {
-                    Picasso.get().load(weatherData?.photoId).into(object :Target{
+                if (weatherData?.photoId?.contentEquals("") != true) {
+                    Picasso.get().load(weatherData?.photoId).into(object : Target {
                         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
                             //do nothing
                             //TODO show something
@@ -124,14 +128,18 @@ class WeatherEditPresenter:MvpPresenter<WeatherEditView>() {
                 }
             }
         }
-        viewState.updateUi(weatherData?.city?:"",weatherData?.locale?:"",weatherData?.weather?:"")
+        viewState.updateUi(
+            weatherData?.city ?: "",
+            weatherData?.locale ?: "",
+            weatherData?.weather ?: ""
+        )
     }
 
-    fun onLocaleChange(locale:String){
+    fun onLocaleChange(locale: String) {
         weatherData?.locale = locale
     }
 
-    fun onCityChange(cityName:String){
+    fun onCityChange(cityName: String) {
         weatherData?.city = cityName
     }
 

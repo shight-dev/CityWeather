@@ -5,28 +5,18 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.sample.cityweather.DaggerWork.App
-import com.sample.cityweather.DataClasses.WeatherData
-import com.sample.cityweather.DataWorkers.WeatherConverter
-import com.sample.cityweather.DbWork.DataWorker
 import com.sample.cityweather.Presenters.WeatherEditPresenter
 
 import com.sample.cityweather.R
-import com.sample.cityweather.Retrofit.WeatherController.WeatherController
-import com.sample.cityweather.Retrofit.DataCallback
-import com.sample.cityweather.Retrofit.PictureController.PictureController
 import com.sample.cityweather.mvpViews.WeatherEditView
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_edit.*
-import javax.inject.Inject
 
-class EditFragment : MvpAppCompatFragment(),WeatherEditView {
+class EditFragment : MvpAppCompatFragment(), WeatherEditView {
     private var listener: OnEditFragmentInteractionListener? = null
 
     @InjectPresenter
@@ -88,17 +78,17 @@ class EditFragment : MvpAppCompatFragment(),WeatherEditView {
         weatherEditPresenter.onStart()
     }
 
-    override fun updateUi(cityName:String, locale:String, weather:String) {
+    override fun updateUi(cityName: String, locale: String, weather: String) {
         cityEdit.setText(cityName)
         localeEdit.setText(locale)
         weatherView.text = weather
     }
 
-    override fun updateTemp(temp:String){
+    override fun updateTemp(temp: String) {
         weatherView.text = temp
     }
 
-    override fun updateImage(bitmap:Bitmap){
+    override fun updateImage(bitmap: Bitmap) {
         imageView.setImageBitmap(bitmap)
     }
 
