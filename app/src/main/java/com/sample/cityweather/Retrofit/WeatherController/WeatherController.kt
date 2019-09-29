@@ -35,7 +35,10 @@ class WeatherController {
                 call: Call<WeatherResponse>,
                 response: Response<WeatherResponse>
             ) {
-                dataCallback.setData(response.body()?.main?.temp)
+                val temp = response.body()?.main?.temp
+                temp?.let {
+                    dataCallback.setData(temp)
+                }
             }
 
         })

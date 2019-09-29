@@ -37,7 +37,10 @@ class PictureController {
                 pictureDataList?.let {
                     val size = pictureDataList.size
                     if (size > 0) {
-                        dataCallback.setData(pictureDataList[Random(Date().time).nextInt(size)].largeImageURL)
+                        val url = pictureDataList[Random(Date().time).nextInt(size)].largeImageURL
+                        url?.let {
+                            dataCallback.setData(url)
+                        }
                     }
                 }
             }

@@ -39,7 +39,7 @@ class WeatherListPresenter : MvpPresenter<WeatherListView>() {
 
     fun onItemUpdate(weatherData: WeatherData, position: Int) {
         weatherController.start(object : DataCallback {
-            override fun setData(data: String?) {
+            override fun setData(data: String) {
                 val weatherString = WeatherConverter.convertKelvin(data)
                 if (!weatherString.contentEquals(weatherData.weather)) {
                     weatherData.weather = weatherString

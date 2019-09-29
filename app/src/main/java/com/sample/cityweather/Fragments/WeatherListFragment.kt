@@ -95,7 +95,10 @@ class WeatherListFragment : MvpAppCompatFragment(),
         when (item.itemId) {
             R.id.addItem -> {
                 //TODO rework activity call
-                startActivityForResult(EditActivity.newIntent(activity!!),REQUEST_CODE)
+                val context = activity
+                context?.let {
+                    startActivityForResult(EditActivity.newIntent(context),REQUEST_CODE)
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -109,13 +112,14 @@ class WeatherListFragment : MvpAppCompatFragment(),
         }
 
         override fun onClick(v: View?) {
-            //TODO rework activity call
-            startActivityForResult(EditActivity.newIntent(activity!!, weather.id.toString()), REQUEST_CODE)
+            val context = activity
+            context?.let {
+                startActivityForResult(EditActivity.newIntent(context, weather.id.toString()), REQUEST_CODE)
+            }
         }
 
         lateinit var weather: WeatherData
 
-        //TODO is nessasary?
         var cityTextView: TextView = itemView.findViewById(R.id.cityTextView)
         var weatherTextView: TextView = itemView.findViewById(R.id.weatherTextView)
         var deleteBtn: Button = itemView.findViewById(R.id.deleteBtn)

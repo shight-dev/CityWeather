@@ -16,7 +16,7 @@ import com.sample.cityweather.R
 import com.sample.cityweather.mvpViews.WeatherEditView
 import kotlinx.android.synthetic.main.fragment_edit.*
 
-class EditFragment : MvpAppCompatFragment(), WeatherEditView {
+class WeatherEditFragment : MvpAppCompatFragment(), WeatherEditView {
     private var listener: OnEditFragmentInteractionListener? = null
 
     @InjectPresenter
@@ -115,11 +115,11 @@ class EditFragment : MvpAppCompatFragment(), WeatherEditView {
         private const val ID = "id"
 
         @JvmStatic
-        fun newInstance(id: String?): EditFragment {
+        fun newInstance(id: String?): WeatherEditFragment {
             val bundle = Bundle()
             bundle.putSerializable(ID, id)
 
-            val editFragment = EditFragment()
+            val editFragment = WeatherEditFragment()
             editFragment.arguments = bundle
             return editFragment
         }

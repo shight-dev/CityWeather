@@ -59,7 +59,7 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
     fun onRefreshDataBtnClick() {
         weatherData?.let {
             weatherController.start(object : DataCallback {
-                override fun setData(data: String?) {
+                override fun setData(data: String) {
                     val res = WeatherConverter.convertKelvin(data)
                     weatherData!!.weather = res
                     viewState.updateTemp(res)
@@ -68,8 +68,7 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
             val cityName = weatherData?.city ?: ""
             if (!cityName.contentEquals("")) {
                 pictureController.start(object : DataCallback {
-                    override fun setData(data: String?) {
-                        data?.let {
+                    override fun setData(data: String) {
                             weatherData?.photoId = data
                             Picasso.get().load(weatherData?.photoId).into(object : Target {
                                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
@@ -95,7 +94,6 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
                                 }
 
                             })
-                        }
                     }
 
                 }, cityName)

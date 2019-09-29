@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import com.sample.cityweather.Fragments.EditFragment
+import com.sample.cityweather.Fragments.WeatherEditFragment
 
 class EditActivity : SingleFragmentActivity(),
-    EditFragment.OnEditFragmentInteractionListener {
+    WeatherEditFragment.OnEditFragmentInteractionListener {
 
     override fun onFragmentInteraction(string: String) {
         setResult(Activity.RESULT_OK)
@@ -16,7 +16,7 @@ class EditActivity : SingleFragmentActivity(),
 
     override fun createFragment(): Fragment {
         val id = intent.getStringExtra(ID)
-        return EditFragment.newInstance(id ?: null)
+        return WeatherEditFragment.newInstance(id ?: null)
     }
 
     companion object {
