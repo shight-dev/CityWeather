@@ -9,6 +9,12 @@ private const val PICTURE_API_KEY = "13775761-ac08c83920df608f2b2f1b872"
 
 interface PictureApi {
     @GET("api/")
-    fun loadPictureList(@Query("q")cityName:String, @Query("key")appId:String = PICTURE_API_KEY
-    ,@Query("category") category:String = "place") : Call<PictureResponse>
+    fun loadPictureList(
+        @Query("q") cityName: String, @Query("key") appId: String = PICTURE_API_KEY
+        , @Query("category") category: String = "place"
+    ): Call<PictureResponse>
+
+    @GET("api/")
+    fun loadPictureById(@Query("id")id:String,
+                        @Query("key")appId: String = PICTURE_API_KEY):Call<PictureResponse>
 }

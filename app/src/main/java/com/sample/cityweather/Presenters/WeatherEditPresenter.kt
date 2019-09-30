@@ -1,5 +1,6 @@
 package com.sample.cityweather.Presenters
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import com.arellomobile.mvp.InjectViewState
@@ -8,6 +9,7 @@ import com.sample.cityweather.DaggerWork.App
 import com.sample.cityweather.DataClasses.WeatherData
 import com.sample.cityweather.DataWorkers.WeatherConverter
 import com.sample.cityweather.DbWork.DataWorker
+import com.sample.cityweather.R
 import com.sample.cityweather.Retrofit.DataCallback
 import com.sample.cityweather.Retrofit.PictureController.PictureController
 import com.sample.cityweather.Retrofit.WeatherController.WeatherController
@@ -21,6 +23,9 @@ import javax.inject.Inject
 class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
     @Inject
     lateinit var dataWorker: DataWorker
+
+    @Inject
+    lateinit var context:Context
 
     @Inject
     lateinit var weatherController: WeatherController
@@ -59,6 +64,10 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
     fun onRefreshDataBtnClick() {
         weatherData?.let {
             weatherController.start(object : DataCallback {
+                override fun setId(id: String) {
+                    //do nothing
+                }
+
                 override fun setNoData() {
                     viewState.updateTemp("Incorrect city")
                     weatherData!!.weather = ""
@@ -73,12 +82,17 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
             val cityName = weatherData?.city ?: ""
             if (!cityName.contentEquals("")) {
                 pictureController.start(object : DataCallback {
+                    override fun setId(id: String) {
+                        weatherData?.photoId = id
+                    }
+
                     override fun setNoData() {
+                        viewState.showToast(context.getString(R.string.loading_failed))
                     }
 
                     override fun setData(data: String) {
-                            weatherData?.photoId = data
-                            Picasso.get().load(weatherData?.photoId).into(object : Target {
+                            //weatherData?.photoId = data
+                            Picasso.get().load(data).into(object : Target {
                                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
                                     //do nothing
                                     //TODO show something
@@ -111,27 +125,36 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
 
     fun onStart() {
         if (!isNew) {
-            weatherData?.let {
-                if (weatherData?.photoId?.contentEquals("") != true) {
-                    Picasso.get().load(weatherData?.photoId).into(object : Target {
-                        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+            val photoId = weatherData?.photoId
+            photoId?.let {
+                if (!photoId.contentEquals("")) {
+                    pictureController.loadById(object :DataCallback {
+                        override fun setData(data: String) {
+                            Picasso.get().load(data).into(object : Target {
+                                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                                    //TODO show something
+                                }
+
+                                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                                    //TODO show something
+                                }
+
+                                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                                    bitmap?.let {
+                                        viewState.updateImage(bitmap)
+                                    }
+                                }
+                            })
+                        }
+
+                        override fun setId(id: String) {
                             //do nothing
-                            //TODO show something
                         }
 
-                        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-                            //do nothing
-                            val a =1
-                            //TODO show something
+                        override fun setNoData() {
+                            viewState.showToast(context.getString(R.string.loading_failed))
                         }
-
-                        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                            bitmap?.let {
-                                viewState.updateImage(bitmap)
-                            }
-                        }
-
-                    })
+                    },photoId)
                 }
             }
         }

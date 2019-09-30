@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.sample.cityweather.Presenters.WeatherEditPresenter
@@ -17,6 +18,13 @@ import com.sample.cityweather.mvpViews.WeatherEditView
 import kotlinx.android.synthetic.main.fragment_edit.*
 
 class WeatherEditFragment : MvpAppCompatFragment(), WeatherEditView {
+    override fun showToast(message: String) {
+        val context = activity
+        context?.let {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private var listener: OnEditFragmentInteractionListener? = null
 
     @InjectPresenter

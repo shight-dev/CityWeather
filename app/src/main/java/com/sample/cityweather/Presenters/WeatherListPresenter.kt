@@ -39,6 +39,10 @@ class WeatherListPresenter : MvpPresenter<WeatherListView>() {
 
     fun onItemUpdate(weatherData: WeatherData, position: Int) {
         weatherController.start(object : DataCallback {
+            override fun setId(id: String) {
+                //do nothing
+            }
+
             override fun setNoData() {
                 if(!weatherData.weather.contentEquals("")) {
                     weatherData.weather = ""

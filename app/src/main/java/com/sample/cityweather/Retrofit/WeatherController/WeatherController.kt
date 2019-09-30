@@ -14,23 +14,23 @@ class WeatherController {
 
     private val BASE_URL = "http://api.openweathermap.org/"
 
-    fun start(dataCallback: DataCallback, weatherData: WeatherData) {
+    private val weatherApi :WeatherApi
+    
+    init {
         val gson = GsonBuilder().setLenient().create()
-
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
+        weatherApi = retrofit.create(WeatherApi::class.java)
+    }
 
-        val weatherApi = retrofit.create(WeatherApi::class.java)
-
+    fun start(dataCallback: DataCallback, weatherData: WeatherData) {
         val call: Call<WeatherResponse> =
             weatherApi.loadWeather("${weatherData.city},${weatherData.locale}")
-
         call.enqueue(object : Callback<WeatherResponse> {
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                 //TODO toast error
-                val a = 1
             }
 
             override fun onResponse(
