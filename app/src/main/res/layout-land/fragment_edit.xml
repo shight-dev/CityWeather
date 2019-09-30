@@ -49,7 +49,7 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="center"
+        android:scaleType="fitXY"
         tools:src="@tools:sample/avatars[3]" />
 
 </LinearLayout>

@@ -15,7 +15,7 @@ class WeatherController {
     private val BASE_URL = "http://api.openweathermap.org/"
 
     private val weatherApi :WeatherApi
-    
+
     init {
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()

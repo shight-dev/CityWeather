@@ -5,10 +5,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.sample.cityweather.DataClasses.WeatherData
+import com.sample.cityweather.Retrofit.DataCallback
 import java.util.concurrent.Executors
 
 
 class DataWorker(context: Context) {
+
+    var createCallback: CreateCallback? = null
 
     private val callback = object : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -17,6 +20,7 @@ class DataWorker(context: Context) {
                 .execute {
                     mWeatherDb.weatherDao().addWeather(WeatherData("+15", "Moscow", "ru"))
                     mWeatherDb.weatherDao().addWeather(WeatherData("+35", "Bangkok", "th"))
+                    createCallback?.created()
                 }
         }
 

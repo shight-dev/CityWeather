@@ -28,6 +28,7 @@ class PictureController {
         val call: Call<PictureResponse> = pictureApi.loadPictureList(cityName)
         call.enqueue(object : Callback<PictureResponse> {
             override fun onFailure(call: Call<PictureResponse>, t: Throwable) {
+                dataCallback.setNoData()
             }
 
             override fun onResponse(

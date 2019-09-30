@@ -5,6 +5,7 @@ import com.arellomobile.mvp.MvpPresenter
 import com.sample.cityweather.DaggerWork.App
 import com.sample.cityweather.DataClasses.WeatherData
 import com.sample.cityweather.DataWorkers.WeatherConverter
+import com.sample.cityweather.DbWork.CreateCallback
 import com.sample.cityweather.DbWork.DataWorker
 import com.sample.cityweather.mvpViews.WeatherListView
 import com.sample.cityweather.Retrofit.DataCallback
@@ -22,6 +23,15 @@ class WeatherListPresenter : MvpPresenter<WeatherListView>() {
 
     init {
         App.component.inject(this)
+    }
+
+    fun onStart(){
+        dataWorker.createCallback = object :CreateCallback{
+            override fun created() {
+                viewState.updateUi(dataWorker.getAllWeather())
+            }
+
+        }
     }
 
     fun onUpdateBtnClick() {

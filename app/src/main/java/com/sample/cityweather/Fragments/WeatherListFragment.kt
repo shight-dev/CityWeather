@@ -49,6 +49,7 @@ class WeatherListFragment : MvpAppCompatFragment(),
     }
 
     override fun onStart() {
+        weatherListPresenter.onStart()
         weatherRecyclerView!!.layoutManager = LinearLayoutManager(activity)
         updateBtn.setOnClickListener{
             weatherListPresenter.onUpdateBtnClick()

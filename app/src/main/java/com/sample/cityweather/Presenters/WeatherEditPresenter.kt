@@ -2,6 +2,7 @@ package com.sample.cityweather.Presenters
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
@@ -88,22 +89,25 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
 
                     override fun setNoData() {
                         viewState.showToast(context.getString(R.string.loading_failed))
+                        viewState.updateImage(BitmapFactory.decodeResource(context.resources,
+                            R.drawable.error))
                     }
 
                     override fun setData(data: String) {
-                            //weatherData?.photoId = data
                             Picasso.get().load(data).into(object : Target {
                                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                                    //do nothing
-                                    //TODO show something
+                                    viewState.updateImage(
+                                        BitmapFactory.decodeResource(context.resources,
+                                            R.drawable.downloading))
                                 }
 
                                 override fun onBitmapFailed(
                                     e: Exception?,
                                     errorDrawable: Drawable?
                                 ) {
-                                    //do nothing
-                                    //TODO show something
+                                    viewState.updateImage(
+                                        BitmapFactory.decodeResource(context.resources,
+                                            R.drawable.error))
                                 }
 
                                 override fun onBitmapLoaded(
@@ -132,11 +136,15 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
                         override fun setData(data: String) {
                             Picasso.get().load(data).into(object : Target {
                                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                                    //TODO show something
+                                    viewState.updateImage(
+                                        BitmapFactory.decodeResource(context.resources,
+                                        R.drawable.downloading))
                                 }
 
                                 override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-                                    //TODO show something
+                                    viewState.updateImage(
+                                        BitmapFactory.decodeResource(context.resources,
+                                            R.drawable.error))
                                 }
 
                                 override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
@@ -153,6 +161,8 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
 
                         override fun setNoData() {
                             viewState.showToast(context.getString(R.string.loading_failed))
+                            viewState.updateImage(BitmapFactory.decodeResource(context.resources,
+                                R.drawable.error))
                         }
                     },photoId)
                 }
