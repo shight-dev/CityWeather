@@ -59,6 +59,11 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
     fun onRefreshDataBtnClick() {
         weatherData?.let {
             weatherController.start(object : DataCallback {
+                override fun setNoData() {
+                    viewState.updateTemp("Incorrect city")
+                    weatherData!!.weather = ""
+                }
+
                 override fun setData(data: String) {
                     val res = WeatherConverter.convertKelvin(data)
                     weatherData!!.weather = res
@@ -68,6 +73,9 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
             val cityName = weatherData?.city ?: ""
             if (!cityName.contentEquals("")) {
                 pictureController.start(object : DataCallback {
+                    override fun setNoData() {
+                    }
+
                     override fun setData(data: String) {
                             weatherData?.photoId = data
                             Picasso.get().load(weatherData?.photoId).into(object : Target {
@@ -113,6 +121,7 @@ class WeatherEditPresenter : MvpPresenter<WeatherEditView>() {
 
                         override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
                             //do nothing
+                            val a =1
                             //TODO show something
                         }
 

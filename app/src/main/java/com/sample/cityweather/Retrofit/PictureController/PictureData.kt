@@ -5,5 +5,6 @@ class PictureData {
     val imageWidth:String? = null
     val imageHeight:String? = null
     val largeImageURL:String? = null
+    val id:String? = null
     val pageURL:String? = null
 }

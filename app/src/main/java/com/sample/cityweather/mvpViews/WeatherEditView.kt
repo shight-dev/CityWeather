@@ -2,12 +2,13 @@ package com.sample.cityweather.mvpViews
 
 import android.graphics.Bitmap
 import com.arellomobile.mvp.MvpView
+import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 
 interface WeatherEditView : MvpView {
 
-    @StateStrategyType(SkipStrategy::class)
+    @StateStrategyType(SingleStateStrategy::class)
     fun updateImage(bitmap: Bitmap)
 
     @StateStrategyType(SkipStrategy::class)

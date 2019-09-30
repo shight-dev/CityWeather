@@ -29,6 +29,8 @@ class WeatherController {
 
         call.enqueue(object : Callback<WeatherResponse> {
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                //TODO toast error
+                val a = 1
             }
 
             override fun onResponse(
@@ -39,6 +41,7 @@ class WeatherController {
                 temp?.let {
                     dataCallback.setData(temp)
                 }
+                    ?: dataCallback.setNoData()
             }
 
         })
