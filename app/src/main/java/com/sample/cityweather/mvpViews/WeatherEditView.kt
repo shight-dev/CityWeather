@@ -18,5 +18,5 @@ interface WeatherEditView : MvpView {
     fun updateUi(cityName: String, locale: String, weather: String)
 
     @StateStrategyType(SkipStrategy::class)
-    fun showToast(message:String)
+    fun showToast(message: String)
 }

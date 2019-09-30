@@ -3,7 +3,7 @@ package com.sample.cityweather.mvpViews
 import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
-import com.sample.cityweather.DataClasses.WeatherData
+import com.sample.cityweather.dataClasses.WeatherData
 
 interface WeatherListView : MvpView {
     @StateStrategyType(SkipStrategy::class)
